@@ -1,5 +1,7 @@
 import './App.sass';
 import styles from './App.module.sass';
+import LocationData from './response.json';
+
 
 function App() {
   return (
@@ -12,11 +14,11 @@ function App() {
       <main>
         <div>
           <ul>
-            <li>Urubici, BR</li>
-            <li>Temperatura em Celsius</li>
-            <li>Umidade em %</li>
-            <li>Pressão em hectoPascal</li>
-            <li>Data de atualizacão</li>
+            <li>{LocationData.name}, {LocationData.sys.country}</li>
+            <li>Temperatura {LocationData.main.temp}</li>
+            <li>Umidade em {LocationData.main.humidity}</li>
+            <li>Pressão em {LocationData.main.pressure}</li>
+            <li>Data de Atualização</li>
           </ul>
         </div>
       </main>
