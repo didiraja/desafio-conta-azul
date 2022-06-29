@@ -1,24 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import './App.sass';
+import styles from './App.module.sass';
 
 function App() {
   return (
-    <div className="App">
+    <>
+    <div className={`App ${styles.app}`}>
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        Logo aqui
       </header>
+
+      <main>
+        <div>
+          <ul>
+            <li>Urubici, BR</li>
+            <li>Temperatura em Celsius</li>
+            <li>Umidade em %</li>
+            <li>Pressão em hectoPascal</li>
+            <li>Data de atualizacão</li>
+          </ul>
+        </div>
+      </main>
     </div>
+    </>
   );
 }
 
