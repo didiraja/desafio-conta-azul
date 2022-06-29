@@ -1,4 +1,4 @@
-/* 64.1835, -51.7216 */
+
 export const nuuk = {
   coord: {
     lon: -51.7216,
@@ -89,7 +89,7 @@ export const ubirici = {
   cod: 200,
 };
 
-/* -1.286389, 36.817223 */
+
 export const nairobi = {
   coord: {
     lon: 36.8172,
