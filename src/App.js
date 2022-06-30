@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 
 import "./App.sass";
-import styles from "./App.module.sass";
-import CityBox from "./compnents/CityBox";
 import { getLocationData } from './requests';
+import CityBox from "./components/CityBox";
+import AppStyle from "./App.module.sass";
+import OWLogo from './assets/logo.svg';
 
 const timeNow = new Date().toLocaleString("en-US", {
   hour: "numeric",
@@ -48,8 +49,10 @@ function App() {
   }, [], () => setLocations([]));
 
   return (
-      <div className={`App ${styles.app}`}>
-        <header className="App-header">Logo aqui</header>
+      <div className={`App ${AppStyle.app}`}>
+        <header className={AppStyle.header}>
+          <img src={OWLogo} alt="OpenWeather - Logo" />
+        </header>
 
         <main>
           {
