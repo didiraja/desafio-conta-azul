@@ -44,7 +44,7 @@ export const nuuk = {
   cod: 200,
 };
 
-export const ubirici = {
+export const urubici = {
   coord: {
     lon: -49.6125,
     lat: -28.0274,

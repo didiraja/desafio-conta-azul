@@ -3,8 +3,7 @@ import { useState, useEffect } from 'react';
 import "./App.sass";
 import styles from "./App.module.sass";
 import CityBox from "./compnents/CityBox";
-/* import { nuuk, ubirici, nairobi } from "./response"; */
-import { getLocationData, getFakeLocationData } from './requests';
+import { getLocationData } from './requests';
 
 const timeNow = new Date().toLocaleString("en-US", {
   hour: "numeric",
@@ -16,18 +15,18 @@ const timeNow = new Date().toLocaleString("en-US", {
 const places = [
   {
     name:'nuuk',
-    lon: 64.1835,
-    lat: -51.7216,
+    lat: 64.1835,
+    lon: -51.7216,
   },
   {
-    name:'ubirici',
-    lon: -49.6125,
+    name:'urubici',
     lat: -28.0274,
+    lon: -49.6125,
   },
   {
     name:'nairobi',
-    lon: -1.286389,
-    lat: 36.817223,
+    lat: -1.286389,
+    lon: 36.817223,
 }];
 
 function App() {
@@ -38,7 +37,7 @@ function App() {
   useEffect(() => {
 
     places.forEach((item, i) => {
-      getFakeLocationData(item.name)
+      getLocationData(item.lat, item.lon)
         .then(res => {
           return setLocations((oldState) => [
             ...oldState, {...(res.data)}
