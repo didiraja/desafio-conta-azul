@@ -6,3 +6,7 @@ const API_KEY = '269742604753455d7fb3826eb1939049';
 export const getLocationData = (lat, lon) => {
   return axios.get(`${BASE_URI}?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`)
 };
+
+export const getFakeLocationData = (endpoint) => {
+  return axios.get(`http://localhost:3000/${endpoint}`)
+};
