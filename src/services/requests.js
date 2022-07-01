@@ -61,3 +61,14 @@ export async function getNairobiData() {
         };
       });
 };
+
+export const timeNow = new Date();
+
+export const sendToStorage = (key,obj) => {
+
+  const dateFormatted = timeNow.toLocaleString("en-US", {
+    hour: "numeric", minute: "numeric", second: "numeric",
+    hour12: true });
+
+  return localStorage.setItem(key, JSON.stringify({...obj, date: { object: timeNow, formatted: dateFormatted }}));
+}

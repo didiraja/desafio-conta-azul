@@ -1,24 +1,23 @@
 import { useState, useEffect } from 'react';
 
 import "./App.sass";
-import { getUrubiciData, getNuukData, getNairobiData } from './services/requests';
+import { getUrubiciData, getNuukData, getNairobiData, sendToStorage, timeNow } from './services/requests';
 import CityBox from "./components/CityBox";
 import styles from "./App.module.sass";
 import OWLogo from './assets/logo.svg';
 // import { urubici, nuuk, nairobi } from './response';
 
-const timeNow = new Date().toLocaleString("en-US", {
-  hour: "numeric",
-  minute: "numeric",
-  second: "numeric",
-  hour12: true,
-});
-
 function App() {
 
   const INITIAL_DATA = {
     status: 'pending',
-    data: {}
+    data: {},
+    date: {
+      object: timeNow,
+      formatted: timeNow.toLocaleString("en-US", {
+        hour: "numeric", minute: "numeric", second: "numeric",
+        hour12: true }),
+    }
   };
   
   const [urubici, setUrubici] = useState({ ...INITIAL_DATA});
@@ -29,12 +28,52 @@ function App() {
 
   function loadUrubici() {
 
-    setUrubici(INITIAL_DATA);
+    // mock empty storage
+    // localStorage.setItem('urubiciStorage', "");
 
-    const urubiciData = getUrubiciData();
+    let cityStorage = localStorage.getItem('urubiciStorage');
 
-    (async () => setUrubici(await urubiciData))();
+    if (cityStorage) {
+      cityStorage = JSON.parse(cityStorage);
+  
+      const storageDate = new Date(cityStorage.date.object);
+      const minutes = storageDate.valueOf();
+      const minutesLimit = storageDate.setMinutes(storageDate.getMinutes() > 10);
+      
+      if (!cityStorage.data || minutes > minutesLimit) {
+
+        return (async () => {
+
+          const urubiciData = getUrubiciData();
     
+          sendToStorage('urubiciStorage', await urubiciData);
+    
+          cityStorage = localStorage.getItem('urubiciStorage');
+    
+          cityStorage = JSON.parse(cityStorage);
+      
+          console.log('final storage', cityStorage);
+          
+          setUrubici(cityStorage);
+        })();
+      }
+      return;
+    }
+    
+    (async () => {
+
+      const urubiciData = getUrubiciData();
+
+      sendToStorage('urubiciStorage', await urubiciData);
+
+      cityStorage = localStorage.getItem('urubiciStorage');
+
+      cityStorage = JSON.parse(cityStorage);
+  
+      console.log('final storage', cityStorage);
+
+      setUrubici(cityStorage);
+    })();
   }
 
   function loadNuuk() {
@@ -59,6 +98,8 @@ function App() {
 
   useEffect(() => {
 
+    setUrubici(INITIAL_DATA);
+
     loadUrubici();
 
     loadNuuk();
@@ -77,17 +118,14 @@ function App() {
           <CityBox
             style={{gridArea: 'A'}}
             title="Urubici, BR"
-            status={urubici.status}
-            {...urubici.data}
-            {...updatedAt} 
+            {...urubici}
             onTryAgain={() => loadUrubici()}
             />
 
           <CityBox
             style={{gridArea: 'B'}}
             title="Nuuk, GL"
-            status={nuuk.status}
-            {...nuuk.data}
+            {...nuuk}
             {...updatedAt}
             onTryAgain={() => loadNuuk()}
             />
@@ -95,8 +133,7 @@ function App() {
           <CityBox
             style={{gridArea: 'C'}}
             title="Nairobi, KE"
-            status={nairobi.status}
-            {...nairobi.data}
+            {...nairobi}
             {...updatedAt}
             onTryAgain={() => loadNairobi()}
           />

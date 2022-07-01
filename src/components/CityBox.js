@@ -1,11 +1,14 @@
 import styles from "./CityBox.module.sass";
 import Loading from "../assets/loader.svg";
 
-function CityBox({ style, title, status, name, sys, main, updatedAt, onTryAgain }) {
+function CityBox({ style, title, status, data, date, onTryAgain }) {
+
+  const isComponentReady = status === "completed";
+
   function tempColor() {
-    if (main && main.temp) {
-      if (main.temp.toFixed() <= 5) return styles.isCold;
-      if (main.temp.toFixed() > 25) return styles.isHot;
+    if (isComponentReady) {
+      if (data.main.temp.toFixed() <= 5) return styles.isCold;
+      if (data.main.temp.toFixed() > 25) return styles.isHot;
     }
 
     return styles.temperature;
@@ -32,31 +35,34 @@ function CityBox({ style, title, status, name, sys, main, updatedAt, onTryAgain 
         </div>
       }
 
-      {status === "completed" && (
+      {isComponentReady && (
         <>
           <div className={styles.cityTempBox}>
             <p className={`${styles.cityTemp} ${tempColor()}`}>
-              {main.temp.toFixed()}°
+              {data.main.temp.toFixed()}°
             </p>
           </div>
 
           <div className={styles.cityCardBottom}>
-            {name === "Urubici" && (
+            {data.name === "Urubici" && (
               <div className={styles.cityCardInfo}>
                 <div>
                   <p className={styles.title}>Humidity</p>
-                  <p className={styles.value}>{main.humidity}%</p>
+                  <p className={styles.value}>{data.main.humidity}%</p>
                 </div>
                 <div>
                   <p className={styles.title}>Pressure</p>
-                  <p className={styles.value}>{main.pressure}hPa</p>
+                  <p className={styles.value}>{data.main.pressure}hPa</p>
                 </div>
               </div>
             )}
 
-            <div className={styles.cityCardUpdated}>
-              <div>Updated at {updatedAt}</div>
-            </div>
+            {
+              date &&
+              <div className={styles.cityCardUpdated}>
+                <div>Updated at {date.formatted}</div>
+              </div>
+            }
           </div>
         </>
       )}
