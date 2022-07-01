@@ -47,8 +47,8 @@ function App() {
 
         <main className={styles.container}>          
           {
-            state && state.map((item, index) => {
-              return <CityBox style={{gridArea: index+1}} key={index} {...item} onTryAgain={() => getCardsData()} />
+            state && state.map((item, i) => {
+              return <CityBox key={i} {...item} onTryAgain={() => getCardsData()} />
             })
           }
         </main>
