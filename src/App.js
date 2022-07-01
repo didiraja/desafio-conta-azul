@@ -1,110 +1,41 @@
 import { useState, useEffect } from 'react';
 
 import "./App.sass";
-import { getUrubiciData, getNuukData, getNairobiData, sendToStorage, timeNow } from './services/requests';
+import { loadCity } from './services/functions';
+import { INITIAL_DATA } from './services/consts';
 import CityBox from "./components/CityBox";
 import styles from "./App.module.sass";
 import OWLogo from './assets/logo.svg';
-// import { urubici, nuuk, nairobi } from './response';
 
 function App() {
 
-  const INITIAL_DATA = {
-    status: 'pending',
-    data: {},
-    date: {
-      object: timeNow,
-      formatted: timeNow.toLocaleString("en-US", {
-        hour: "numeric", minute: "numeric", second: "numeric",
-        hour12: true }),
-    }
-  };
+  const cities = ['Urubici', 'Nuuk', 'Nairobi'];
+
+  const STATE_DEFAULT = cities.map((item) => {
+    return {
+      city: item,
+      ...INITIAL_DATA,
+    };
+  });
+
+  const [state, setState] = useState([]);
   
-  const [urubici, setUrubici] = useState({ ...INITIAL_DATA});
-  const [nuuk, setNuuk] = useState({ ...INITIAL_DATA});
-  const [nairobi, setNairobi] = useState({ ...INITIAL_DATA});
+  function getCardsData() {
 
-  const [updatedAt] = useState({updatedAt: timeNow});
+    STATE_DEFAULT.forEach(async (item, index) => {
 
-  function loadUrubici() {
-
-    // mock empty storage
-    // localStorage.setItem('urubiciStorage', "");
-
-    let cityStorage = localStorage.getItem('urubiciStorage');
-
-    if (cityStorage) {
-      cityStorage = JSON.parse(cityStorage);
-  
-      const storageDate = new Date(cityStorage.date.object);
-      const minutes = storageDate.valueOf();
-      const minutesLimit = storageDate.setMinutes(storageDate.getMinutes() > 10);
+      const response = await loadCity(item);
       
-      if (!cityStorage.data || minutes > minutesLimit) {
+      setState((oldState) => {
+        return [...oldState, {...response}]
+      });
+    });
 
-        return (async () => {
-
-          const urubiciData = getUrubiciData();
-    
-          sendToStorage('urubiciStorage', await urubiciData);
-    
-          cityStorage = localStorage.getItem('urubiciStorage');
-    
-          cityStorage = JSON.parse(cityStorage);
-      
-          console.log('final storage', cityStorage);
-          
-          setUrubici(cityStorage);
-        })();
-      }
-      return;
-    }
-    
-    (async () => {
-
-      const urubiciData = getUrubiciData();
-
-      sendToStorage('urubiciStorage', await urubiciData);
-
-      cityStorage = localStorage.getItem('urubiciStorage');
-
-      cityStorage = JSON.parse(cityStorage);
-  
-      console.log('final storage', cityStorage);
-
-      setUrubici(cityStorage);
-    })();
-  }
-
-  function loadNuuk() {
-
-    setNuuk(INITIAL_DATA);
-
-    const nuukData = getNuukData();
-
-    (async () => setNuuk(await nuukData))();
-    
-  }
-
-  function loadNairobi() {
-
-    setNairobi(INITIAL_DATA);
-
-    const nairobiData = getNairobiData();
-
-    (async () => setNairobi(await nairobiData))();
-    
   }
 
   useEffect(() => {
 
-    setUrubici(INITIAL_DATA);
-
-    loadUrubici();
-
-    loadNuuk();
-
-    loadNairobi();
+    getCardsData();
 
   }, []);
 
@@ -114,29 +45,12 @@ function App() {
           <img src={OWLogo} alt="OpenWeather - Logo" />
         </header>
 
-        <main className={styles.container}>
-          <CityBox
-            style={{gridArea: 'A'}}
-            title="Urubici, BR"
-            {...urubici}
-            onTryAgain={() => loadUrubici()}
-            />
-
-          <CityBox
-            style={{gridArea: 'B'}}
-            title="Nuuk, GL"
-            {...nuuk}
-            {...updatedAt}
-            onTryAgain={() => loadNuuk()}
-            />
-          
-          <CityBox
-            style={{gridArea: 'C'}}
-            title="Nairobi, KE"
-            {...nairobi}
-            {...updatedAt}
-            onTryAgain={() => loadNairobi()}
-          />
+        <main className={styles.container}>          
+          {
+            state && state.map((item, index) => {
+              return <CityBox style={{gridArea: index+1}} key={index} {...item} onTryAgain={() => getCardsData()} />
+            })
+          }
         </main>
       </>
   );

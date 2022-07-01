@@ -18,7 +18,7 @@ function CityBox({ style, title, status, data, date, onTryAgain }) {
     <div className={styles.cityBox} style={{ ...style }}>
       <div className={styles.cityNameBox}>
         <p className={styles.cityName}>
-          {title}
+          {data.name}, {data.sys.country}
         </p>
       </div>
 
