@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
 import "./App.sass";
-import { getLocationData } from './requests';
+import { getUrubiciData, getNuukData, getNairobiData } from './services/requests';
 import CityBox from "./components/CityBox";
 import styles from "./App.module.sass";
 import OWLogo from './assets/logo.svg';
@@ -27,46 +27,43 @@ function App() {
 
   const [updatedAt] = useState({updatedAt: timeNow});
 
+  function loadUrubici() {
+
+    setUrubici(INITIAL_DATA);
+
+    const urubiciData = getUrubiciData();
+
+    (async () => setUrubici(await urubiciData))();
+    
+  }
+
+  function loadNuuk() {
+
+    setNuuk(INITIAL_DATA);
+
+    const nuukData = getNuukData();
+
+    (async () => setNuuk(await nuukData))();
+    
+  }
+
+  function loadNairobi() {
+
+    setNairobi(INITIAL_DATA);
+
+    const nairobiData = getNairobiData();
+
+    (async () => setNairobi(await nairobiData))();
+    
+  }
+
   useEffect(() => {
 
-    getLocationData('urubici')
-      .then(res => setUrubici({
-        status: 'completed',
-        data: res.data
-      }))
-      .catch(e => {
+    loadUrubici();
 
-        console.log(e);
-        return setUrubici({
-          status: 'error',
-        });
-      });
+    loadNuuk();
 
-    getLocationData('nuuk')
-      .then(res => setNuuk({
-        status: 'completed',
-        data: res.data
-      }))
-      .catch(e => {
-
-        console.log(e);
-        return setNuuk({
-          status: 'error',
-        });
-      });
-
-    getLocationData('nairobi')
-      .then(res => setNairobi({
-        status: 'completed',
-        data: res.data
-      }))
-      .catch(e => {
-
-        console.log(e);
-        return setNairobi({
-          status: 'error',
-        });
-      });
+    loadNairobi();
 
   }, []);
 
@@ -83,7 +80,8 @@ function App() {
             status={urubici.status}
             {...urubici.data}
             {...updatedAt} 
-          />
+            onTryAgain={() => loadUrubici()}
+            />
 
           <CityBox
             style={{gridArea: 'B'}}
@@ -91,7 +89,8 @@ function App() {
             status={nuuk.status}
             {...nuuk.data}
             {...updatedAt}
-          />
+            onTryAgain={() => loadNuuk()}
+            />
           
           <CityBox
             style={{gridArea: 'C'}}
@@ -99,6 +98,7 @@ function App() {
             status={nairobi.status}
             {...nairobi.data}
             {...updatedAt}
+            onTryAgain={() => loadNairobi()}
           />
         </main>
       </>

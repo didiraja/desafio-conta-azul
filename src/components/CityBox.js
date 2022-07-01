@@ -1,7 +1,7 @@
 import styles from "./CityBox.module.sass";
 import Loading from "../assets/loader.svg";
 
-function CityBox({ style, title, status, name, sys, main, updatedAt }) {
+function CityBox({ style, title, status, name, sys, main, updatedAt, onTryAgain }) {
   function tempColor() {
     if (main && main.temp) {
       if (main.temp.toFixed() <= 5) return styles.isCold;
@@ -22,7 +22,7 @@ function CityBox({ style, title, status, name, sys, main, updatedAt }) {
       {status === "error" && 
         <div className={styles.errorWrapper}>
           <p className={styles.errorTxt}>Something went wrong!</p>
-          <button className={styles.errorBtn} onClick={() => console.log('clicou!')}>Try Again</button>
+          <button className={styles.errorBtn} onClick={() => onTryAgain()}>Try Again</button>
         </div>
       }
 
