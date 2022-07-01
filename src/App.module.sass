@@ -9,3 +9,15 @@
   img
     width: 12rem
     padding: 0.8rem 0
+
+.container
+  max-width: 90%
+  margin: 1rem auto
+
+@include screen-min($screen-md)
+  .container
+    display: grid
+    column-gap: 20px
+    grid-template-columns: repeat(3, 1fr)
+    align-items: center
+    grid-template-areas: "B A C"

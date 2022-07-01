@@ -7,3 +7,13 @@ $bg: #F1F1F1
 $card-footer: rgba(#F1F1F1, 0.5)
 $divider: #EBEBEB
 $box-shadow-style: 0px 1px 2px rgba(#333, 0.1)
+
+$screen-sm: 576px
+$screen-md: 768px
+$screen-lg: 992px
+$screen-xl: 1200px
+$screen-2xl: 1440px
+
+@mixin screen-min($min)
+  @media (min-width: $min)
+    @content

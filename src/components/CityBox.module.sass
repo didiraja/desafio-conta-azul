@@ -1,5 +1,55 @@
 @use '../assets/variables' as *
 
+.cityBox
+  position: relative
+  background: white
+  border-radius: 5px
+  box-shadow: $box-shadow-style
+
+  & ~ &
+    margin-top: 2rem
+
+  p
+    margin: 0
+
+  @include screen-min($screen-md)
+    &
+      display: grid
+      place-items: center
+    & ~ &
+      margin-top: 0
+
+  .cityName
+    padding: 0.8rem
+    border-bottom: 1px solid $divider
+    font-size: 1.2rem
+    text-align: center
+
+  .cityTemp
+    margin: 2rem
+    font-size: 5rem
+    text-align: center
+
+  .cityCardBottom
+    background-color: $card-footer
+    padding: 1rem
+    width: 100%
+    .cityCardInfo
+      display: flex
+      justify-content: space-around
+      .title
+        color: $gray-light
+        text-align: center
+        text-transform: uppercase
+      .value
+        font-weight: bold
+        text-align: center
+    .cityCardUpdated
+      color: $gray-light
+      font-size: .7rem
+      text-align: center
+      margin-top: .8rem
+
 .temperature
   color: $orange
 
