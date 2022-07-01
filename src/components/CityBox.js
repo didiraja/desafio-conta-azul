@@ -4,8 +4,8 @@ function CityBox({ style, name, sys, main, updatedAt }) {
 
   function tempColor() {
     if (main && main.temp) {
-      if (main.temp <= 5) return styles.isCold;
-      if (main.temp > 25) return styles.isHot;
+      if (main.temp <= 6) return styles.isCold;
+      if (main.temp > 26) return styles.isHot;
     }
 
     return styles.temperature;
