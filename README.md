@@ -2,6 +2,8 @@
 
 Aplicacão que busca a temperatura de 3 cidades: Urubici/BR, Nuuk/GL e Nairobi/KE, usando a API [OpenWeather](https://openweathermap.org/current)
 
+## [Demo](https://desafio-conta-azul.vercel.app/)
+
 ## Stack
 
 - React
